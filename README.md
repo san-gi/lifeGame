@@ -1,0 +1,1 @@
+Little implementation of life game
