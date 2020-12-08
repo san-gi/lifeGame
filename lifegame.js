@@ -57,13 +57,22 @@ canvas.addEventListener("click", event => {
 })
 body.addEventListener('mousedown', event => {
     isDrawing = true;
-})
-body.addEventListener('mousemove', e => {
     if (isDrawing) {
         tab2[Math.ceil(event.x / 10) - 1][Math.ceil(event.y / 10) - 1] = true
 
         ctx.beginPath();
         ctx.rect((Math.ceil(event.x / 10) - 1) * 10, (Math.ceil(event.y / 10) - 1) * 10, 10, 10);
+        ctx.fill();
+        ctx.closePath();
+
+    }
+})
+body.addEventListener('mousemove', e => {
+    if (isDrawing) {
+        tab2[Math.ceil(e.x / 10) - 1][Math.ceil(e.y / 10) - 1] = true
+
+        ctx.beginPath();
+        ctx.rect((Math.ceil(e.x / 10) - 1) * 10, (Math.ceil(e.y / 10) - 1) * 10, 10, 10);
         ctx.fill();
         ctx.closePath();
 
@@ -191,7 +200,6 @@ function spaceShip(){
 }
 function vague(){
 
-    clean()
     addtoTab(spaceShip(),60,10)
     addtoTab(spaceShip(),50,10)
     addtoTab(spaceShip(),30,20)
@@ -218,10 +226,12 @@ function addtoTab(f,xx,yy){
 }
 
 function clean(){
+    console.log("oui")
     for (let i = 0; i < x / 10; i++) {
         tab2[i] = []
         for (let j = 0; j < y / 10; j++) {
             tab2[i][j] = false
+            tab[i][j] = false
         }
     }
 }
@@ -234,6 +244,7 @@ function random() {
         }
     }
 }
+
 
 function rapi() {
     clearInterval(inter)
