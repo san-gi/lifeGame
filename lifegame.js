@@ -1,84 +1,69 @@
 let canvas = document.getElementById("myCanvas");
 let body = document.getElementById("b");
+
+
+
+let isDrawing = false;
+let l = false;
+let a = false;
 let ctx = canvas.getContext("2d");
 let x = window.innerWidth;
 let y = window.innerHeight;
 ctx.canvas.width = window.innerWidth - 1;
 ctx.canvas.height = window.innerHeight - 1;
-let isDrawing = false;
-let l = false;
-let a = false;
 ctx.fillStyle = '#eee';
-window.addEventListener("resize", event => {
-    
-    
+window.addEventListener("resize", () => {
     x = window.innerWidth;
     y = window.innerHeight;
     ctx.canvas.width = window.innerWidth - 1;
     ctx.canvas.height = window.innerHeight - 1;
     ctx.fillStyle = '#666666';
     vitesse = 50
-  
     for (let i = 0; i < x / 10; i++) {
         if (i >= tab2.length) {
             tab2[i] = []
             tab = []
         }
     }
- 
     makeTab()
-
 });
-
-
-
 body.addEventListener("click", event => {
     isDrawing = false;
     if (isDrawing) {
         tab2[Math.ceil(event.x / 10) - 1][Math.ceil(event.y / 10) - 1] = true
-
         ctx.beginPath();
         ctx.rect((Math.ceil(event.x / 10) - 1) * 10, (Math.ceil(event.y / 10) - 1) * 10, 10, 10);
         ctx.fill();
         ctx.closePath();
-
     }
 })
-canvas.addEventListener("click", event => {
-
+canvas.addEventListener("click", () => {
     if (!a) {
         ctx.fillStyle = '#666666';
         $("#button").toggleClass("buttonsAnimates")
         $("#button").toggleClass("button")
-
         a = true
     }
-    
 })
 body.addEventListener('mousedown', event => {
     isDrawing = true;
     if (isDrawing) {
         tab2[Math.ceil(event.x / 10) - 1][Math.ceil(event.y / 10) - 1] = true
-
         ctx.beginPath();
         ctx.rect((Math.ceil(event.x / 10) - 1) * 10, (Math.ceil(event.y / 10) - 1) * 10, 10, 10);
         ctx.fill();
         ctx.closePath();
-
     }
 })
 body.addEventListener('mousemove', e => {
     if (isDrawing) {
         tab2[Math.ceil(e.x / 10) - 1][Math.ceil(e.y / 10) - 1] = true
-
         ctx.beginPath();
         ctx.rect((Math.ceil(e.x / 10) - 1) * 10, (Math.ceil(e.y / 10) - 1) * 10, 10, 10);
         ctx.fill();
         ctx.closePath();
-
     }
 })
-
 let tab = []
 let tab2 = []
 let sto = false
@@ -89,10 +74,8 @@ for (let i = 0; i < x / 10; i++) {
         tab2[i][j] = false
     }
 }
-
-
 vague()
-function makeTab() {
+const makeTab = ()=> {
     for (let i = 0; i < x / 10; i++) {
         tab[i] = []
         for (let j = 0; j < y / 10; j++) {
@@ -117,24 +100,20 @@ const make = () => {
             ctx.stroke();
 
     }
-
     for (let i = 0; i < x / 10; i++) {
         for (let j = 0; j < y / 10; j++) {
             n = voisinNb(i, j)
             if (tab[i][j]) {
                 if (n == 2 || n == 3) {
                     tab2[i][j] = true
-
                 } else {
                     tab2[i][j] = false
                 }
-
             } else if (n == 3) {
                 tab2[i][j] = true
             }
         }
     }
-
     makeTab()
     for (let i = 0; i < x / 10; i++) {
         for (let j = 0; j < y / 10; j++) {
@@ -151,21 +130,8 @@ const draw = () => {
     if (!sto)
         make();
 }
-function voisinNb(x, y) {
+const voisinNb = (x, y) => {
     n = 0;
-    // if (tab[x - 1]) {
-    //     n = tab[x - 1][y - 1] ? n + 1 : n
-    //     n = tab[x - 1][y] ? n + 1 : n
-    //     n = tab[x - 1][y + 1] ? n + 1 : n
-    // }
-    // n = tab[x][y - 1] ? n + 1 : n
-    // n = tab[x][y + 1] ? n + 1 : n
-
-    // if (tab[x + 1]) {
-    //     n = tab[x + 1][y - 1] ? n + 1 : n
-    //     n = tab[x + 1][y] ? n + 1 : n
-    //     n = tab[x + 1][y + 1] ? n + 1 : n
-    // }
     let x1 = x - 1 < 0 ? tab.length - 1 : x - 1;
     let x2 = x;
     let x3 = x + 1 > tab.length - 1 ? 0 : x + 1;
@@ -180,53 +146,44 @@ function voisinNb(x, y) {
     n = tab[x3][y1] ? n + 1 : n
     n = tab[x3][y2] ? n + 1 : n
     n = tab[x3][y3] ? n + 1 : n
-
-
     return n
 }
 inter = setInterval(draw, vitesse)
-
-function pause() {
+const pause = () => {
     sto = sto ? false : true
 
 }
-function spaceShip(){
-    var t = [[true,false,true,false],
-            [false,false,false,true],
-            [false,false,false,true],
-            [true,false,false,true],
-            [false,true,true,true]]
-            return t
+const spaceShip = () => {
+    var t = [[true, false, true, false],
+    [false, false, false, true],
+    [false, false, false, true],
+    [true, false, false, true],
+    [false, true, true, true]]
+    return t
 }
-function vague(){
-
-    addtoTab(spaceShip(),60,10)
-    addtoTab(spaceShip(),50,10)
-    addtoTab(spaceShip(),30,20)
-    addtoTab(spaceShip(),30,20)
-    addtoTab(spaceShip(),40,20)
-    addtoTab(spaceShip(),50,20)
-    addtoTab(spaceShip(),40,30)
-    addtoTab(spaceShip(),20,30)
-    addtoTab(spaceShip(),10,40)
-    addtoTab(spaceShip(),40,40)
-    addtoTab(spaceShip(),50,40)
-    addtoTab(spaceShip(),60,40)
-    
+const vague = () => {
+    addtoTab(spaceShip(), 60, 10)
+    addtoTab(spaceShip(), 50, 10)
+    addtoTab(spaceShip(), 30, 20)
+    addtoTab(spaceShip(), 30, 20)
+    addtoTab(spaceShip(), 40, 20)
+    addtoTab(spaceShip(), 50, 20)
+    addtoTab(spaceShip(), 40, 30)
+    addtoTab(spaceShip(), 20, 30)
+    addtoTab(spaceShip(), 10, 40)
+    addtoTab(spaceShip(), 40, 40)
+    addtoTab(spaceShip(), 50, 40)
+    addtoTab(spaceShip(), 60, 40)
 }
-
-function addtoTab(f,xx,yy){
- 
-
-    for (let i = 0; i <f.length; i++) {
-        for (let j = 0; j <f[0].length; j++) {
-            tab2[i+xx][j+yy] = f[i][j]
+const addtoTab = (f, xx, yy) => {
+    for (let i = 0; i < f.length; i++) {
+        for (let j = 0; j < f[0].length; j++) {
+            tab2[i + xx][j + yy] = f[i][j]
         }
     }
 }
 
-function clean(){
-    console.log("oui")
+const clean = () => {
     for (let i = 0; i < x / 10; i++) {
         tab2[i] = []
         for (let j = 0; j < y / 10; j++) {
@@ -235,8 +192,7 @@ function clean(){
         }
     }
 }
-function random() {
-
+const random = () => {
     for (let i = 0; i < x / 10; i++) {
         tab2[i] = []
         for (let j = 0; j < y / 10; j++) {
@@ -245,28 +201,25 @@ function random() {
     }
 }
 
-
-function rapi() {
+const rapi = () => {
     clearInterval(inter)
     vitesse /= 2;
-
     inter = setInterval(draw, vitesse)
-
 }
 
-function lent() {
+const lent = () => {
     clearInterval(inter)
     vitesse *= 2;
     inter = setInterval(draw, vitesse)
 }
 
-function ligne() {
+const ligne = () => {
     l = !l
 }
 
-function leaveGame() {
-     l = false;
-     a = false;
+const leaveGame = () => {
+    l = false;
+    a = false;
     ctx.fillStyle = '#eee';
     $("#button").toggleClass("buttonsAnimates")
     $("#button").toggleClass("button")
