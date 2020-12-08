@@ -1,34 +1,92 @@
 let canvas = document.getElementById("myCanvas");
+let body = document.getElementById("b");
 let ctx = canvas.getContext("2d");
+let x = window.innerWidth;
+let y = window.innerHeight;
+ctx.canvas.width = window.innerWidth - 1;
+ctx.canvas.height = window.innerHeight - 1;
+let isDrawing = false;
+let l = false;
+let a = false;
+ctx.fillStyle = '#eee';
+window.addEventListener("resize", event => {
+    
+    
+    x = window.innerWidth;
+    y = window.innerHeight;
+    ctx.canvas.width = window.innerWidth - 1;
+    ctx.canvas.height = window.innerHeight - 1;
+    ctx.fillStyle = '#666666';
+    vitesse = 50
+  
+    for (let i = 0; i < x / 10; i++) {
+        if (i >= tab2.length) {
+            tab2[i] = []
+            tab = []
+        }
+    }
+ 
+    makeTab()
+
+});
+
+
+
+body.addEventListener("click", event => {
+    isDrawing = false;
+    if (isDrawing) {
+        tab2[Math.ceil(event.x / 10) - 1][Math.ceil(event.y / 10) - 1] = true
+
+        ctx.beginPath();
+        ctx.rect((Math.ceil(event.x / 10) - 1) * 10, (Math.ceil(event.y / 10) - 1) * 10, 10, 10);
+        ctx.fill();
+        ctx.closePath();
+
+    }
+})
+canvas.addEventListener("click", event => {
+
+    if (!a) {
+        ctx.fillStyle = '#666666';
+        $("#button").toggleClass("buttonsAnimates")
+        $("#button").toggleClass("button")
+
+        a = true
+    }
+    
+})
+body.addEventListener('mousedown', event => {
+    isDrawing = true;
+})
+body.addEventListener('mousemove', e => {
+    if (isDrawing) {
+        tab2[Math.ceil(event.x / 10) - 1][Math.ceil(event.y / 10) - 1] = true
+
+        ctx.beginPath();
+        ctx.rect((Math.ceil(event.x / 10) - 1) * 10, (Math.ceil(event.y / 10) - 1) * 10, 10, 10);
+        ctx.fill();
+        ctx.closePath();
+
+    }
+})
+
 let tab = []
 let tab2 = []
 let sto = false
 let vitesse = 100
-for (let i = 0; i < 48; i++) {
+for (let i = 0; i < x / 10; i++) {
     tab2[i] = []
-    for (let j = 0; j < 32; j++) {
+    for (let j = 0; j < y / 10; j++) {
         tab2[i][j] = false
     }
 }
-random()
-// tab2[3][6] = true;
-// tab2[4][6] = true;
-// tab2[5][6] = true;
-// tab2[6][6] = true;
-// tab2[6][7] = true;
-// tab2[6][8] = true;
-// tab2[5][9] = true;
-// tab2[2][9] = true;
-// tab2[2][7] = true;
 
-// tab2[1][6] = true;
-// tab2[5][8] = true;
-// tab2[9][8] = true;
-// tab2[9][9] = true;
+
+vague()
 function makeTab() {
-    for (let i = 0; i < 48; i++) {
+    for (let i = 0; i < x / 10; i++) {
         tab[i] = []
-        for (let j = 0; j < 32; j++) {
+        for (let j = 0; j < y / 10; j++) {
             tab[i][j] = tab2[i][j]
         }
     }
@@ -36,21 +94,23 @@ function makeTab() {
 makeTab()
 const make = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < 49; i++) {
+    for (let i = 0; i < x / 10; i++) {
         ctx.moveTo(i * 10, 0);
-        ctx.lineTo(i * 10, 320);
-        ctx.stroke();
+        ctx.lineTo(i * 10, y);
+        if (l)
+            ctx.stroke();
 
     }
-    for (let j = 0; j < 33; j++) {
+    for (let j = 0; j < y / 10; j++) {
         ctx.moveTo(0, j * 10);
-        ctx.lineTo(480, j * 10);
-        ctx.stroke();
+        ctx.lineTo(x, j * 10);
+        if (l)
+            ctx.stroke();
 
     }
 
-    for (let i = 0; i < 48; i++) {
-        for (let j = 0; j < 32; j++) {
+    for (let i = 0; i < x / 10; i++) {
+        for (let j = 0; j < y / 10; j++) {
             n = voisinNb(i, j)
             if (tab[i][j]) {
                 if (n == 2 || n == 3) {
@@ -67,8 +127,8 @@ const make = () => {
     }
 
     makeTab()
-    for (let i = 0; i < 48; i++) {
-        for (let j = 0; j < 32; j++) {
+    for (let i = 0; i < x / 10; i++) {
+        for (let j = 0; j < y / 10; j++) {
             if (tab[i][j] == true) {
                 ctx.beginPath();
                 ctx.rect(i * 10, j * 10, 10, 10);
@@ -77,7 +137,6 @@ const make = () => {
             }
         }
     }
-
 }
 const draw = () => {
     if (!sto)
@@ -85,37 +144,119 @@ const draw = () => {
 }
 function voisinNb(x, y) {
     n = 0;
-    if (tab[x - 1]) {
-        n = tab[x - 1][y - 1] ? n + 1 : n
-        n = tab[x - 1][y] ? n + 1 : n
-        n = tab[x - 1][y + 1] ? n + 1 : n
+    // if (tab[x - 1]) {
+    //     n = tab[x - 1][y - 1] ? n + 1 : n
+    //     n = tab[x - 1][y] ? n + 1 : n
+    //     n = tab[x - 1][y + 1] ? n + 1 : n
+    // }
+    // n = tab[x][y - 1] ? n + 1 : n
+    // n = tab[x][y + 1] ? n + 1 : n
 
-    }
-    n = tab[x][y - 1] ? n + 1 : n
-    n = tab[x][y + 1] ? n + 1 : n
+    // if (tab[x + 1]) {
+    //     n = tab[x + 1][y - 1] ? n + 1 : n
+    //     n = tab[x + 1][y] ? n + 1 : n
+    //     n = tab[x + 1][y + 1] ? n + 1 : n
+    // }
+    let x1 = x - 1 < 0 ? tab.length - 1 : x - 1;
+    let x2 = x;
+    let x3 = x + 1 > tab.length - 1 ? 0 : x + 1;
+    let y1 = y - 1 < 0 ? tab[0].length - 1 : y - 1;
+    let y2 = y;
+    let y3 = y + 1 > tab[0].length - 1 ? 0 : y + 1;
+    n = tab[x1][y1] ? n + 1 : n
+    n = tab[x1][y2] ? n + 1 : n
+    n = tab[x1][y3] ? n + 1 : n
+    n = tab[x2][y1] ? n + 1 : n
+    n = tab[x2][y3] ? n + 1 : n
+    n = tab[x3][y1] ? n + 1 : n
+    n = tab[x3][y2] ? n + 1 : n
+    n = tab[x3][y3] ? n + 1 : n
 
-    if (tab[x + 1]) {
-        n = tab[x + 1][y - 1] ? n + 1 : n
-        n = tab[x + 1][y] ? n + 1 : n
-        n = tab[x + 1][y + 1] ? n + 1 : n
-    }
+
     return n
 }
-setInterval(draw, 100)
+inter = setInterval(draw, vitesse)
 
 function pause() {
     sto = sto ? false : true
-    console.log(sto)
+
+}
+function spaceShip(){
+    var t = [[true,false,true,false],
+            [false,false,false,true],
+            [false,false,false,true],
+            [true,false,false,true],
+            [false,true,true,true]]
+            return t
+}
+function vague(){
+
+    clean()
+    addtoTab(spaceShip(),60,10)
+    addtoTab(spaceShip(),50,10)
+    addtoTab(spaceShip(),30,20)
+    addtoTab(spaceShip(),30,20)
+    addtoTab(spaceShip(),40,20)
+    addtoTab(spaceShip(),50,20)
+    addtoTab(spaceShip(),40,30)
+    addtoTab(spaceShip(),20,30)
+    addtoTab(spaceShip(),10,40)
+    addtoTab(spaceShip(),40,40)
+    addtoTab(spaceShip(),50,40)
+    addtoTab(spaceShip(),60,40)
+    
 }
 
-function random() {
-    console.log("rannn")
-    for (let i = 0; i < 48; i++) {
+function addtoTab(f,xx,yy){
+ 
+
+    for (let i = 0; i <f.length; i++) {
+        for (let j = 0; j <f[0].length; j++) {
+            tab2[i+xx][j+yy] = f[i][j]
+        }
+    }
+}
+
+function clean(){
+    for (let i = 0; i < x / 10; i++) {
         tab2[i] = []
-        for (let j = 0; j < 32; j++) {
+        for (let j = 0; j < y / 10; j++) {
+            tab2[i][j] = false
+        }
+    }
+}
+function random() {
+
+    for (let i = 0; i < x / 10; i++) {
+        tab2[i] = []
+        for (let j = 0; j < y / 10; j++) {
             tab2[i][j] = Math.random() < 0.5
         }
     }
 }
 
+function rapi() {
+    clearInterval(inter)
+    vitesse /= 2;
 
+    inter = setInterval(draw, vitesse)
+
+}
+
+function lent() {
+    clearInterval(inter)
+    vitesse *= 2;
+    inter = setInterval(draw, vitesse)
+}
+
+function ligne() {
+    l = !l
+}
+
+function leaveGame() {
+     l = false;
+     a = false;
+    ctx.fillStyle = '#eee';
+    $("#button").toggleClass("buttonsAnimates")
+    $("#button").toggleClass("button")
+}
