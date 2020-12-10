@@ -74,7 +74,7 @@ for (let i = 0; i < x / 10; i++) {
         tab2[i][j] = false
     }
 }
-vague()
+
 const makeTab = ()=> {
     for (let i = 0; i < x / 10; i++) {
         tab[i] = []
@@ -83,7 +83,7 @@ const makeTab = ()=> {
         }
     }
 }
-makeTab()
+
 const make = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < x / 10; i++) {
@@ -148,7 +148,7 @@ const voisinNb = (x, y) => {
     n = tab[x3][y3] ? n + 1 : n
     return n
 }
-inter = setInterval(draw, vitesse)
+
 const pause = () => {
     sto = sto ? false : true
 
@@ -224,3 +224,6 @@ const leaveGame = () => {
     $("#button").toggleClass("buttonsAnimates")
     $("#button").toggleClass("button")
 }
+vague()
+makeTab()
+inter = setInterval(draw, vitesse)
